@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>Three.jsでMMO</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<script src="three.min.js"></script>
+		<!-- キャラクターの動作を制御するJS -->
+		<script src='MD2CharacterComplex.js'></script>
+		<!-- webGLが使えるかどうか判定するJS -->
+		<script src='Detector.js'></script>
+		<!-- パフォーマンスをFPSやMSで示してくれるJS -->
+		<script src='stats.min.js'></script>
+		<!-- WebSocketを行うJS -->
+		<script src='/socket.io/socket.io.js'></script>
+		<!-- メイン処理 -->
+		<script src='main.js'></script>
+	</body>
+</html>
