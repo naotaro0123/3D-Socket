@@ -1,11 +1,11 @@
-3D_Socket
+3D-Socket
 =========
 
 three.jsのサンプルコードをSocket.ioでMMO化したものです。
 
-<img src="http://simplecode.jp/lolipop/github/3D_Socket.png" width="80%" height="80%">　
+複数ブラウザを立ち上げると、全てのキャラクターの動きが同期します。
 
-demo: http://simplecode.jp:3001/
+<img src="https://github.com/naotaro0123/3D-Socket/blob/master/image.jpeg" width=550> 
 
 使用方法
 ----------
@@ -27,3 +27,5 @@ demo: http://simplecode.jp:3001/
     npm install socket.io
 
 （３）http://localhost:3001 にアクセスすると動きます
+
+[three.jsとWebSocketでMMOゲームを作ろう！](https://ameblo.jp/chicktack123/entry-11736386525.html)
