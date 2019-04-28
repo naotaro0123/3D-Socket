@@ -1,0 +1,28 @@
+{
+  "name": "3D-Socket",
+  "version": "1.0.0",
+  "description": "3D-Socket",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naotaro0123/3D-Socket.git"
+  },
+  "keywords": [],
+  "author": "naotaro0123",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naotaro0123/3D-Socket/issues"
+  },
+  "homepage": "https://github.com/naotaro0123/3D-Socket#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "prettier": "^1.17.0"
+  }
+}
