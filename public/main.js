@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 // webGLが使えるかどうか判定し、使えなかったらメッセージを出してくれる
 if (!Detector.webgl) Detector.addGetWebGLMessage();
 // スクリーンサイズの指定
@@ -12,21 +15,21 @@ let playerCharacter = null;
 
 // キャラクター情報
 let configOgro = {
-  baseUrl: "ogro/",
-  body: "ogro-light.js",
-  skins: ["grok.jpg"],
-  weapons:  [["weapon-light.js", "weapon.jpg"]],
+  baseUrl: 'ogro/',
+  body: 'ogro-light.js',
+  skins: ['grok.jpg'],
+  weapons: [['weapon-light.js', 'weapon.jpg']],
   animations: {
-    move: "run",
-    idle: "stand",
-    jump: "jump",
-    attack: "attack",
-    crouchMove: "cwalk",
-    crouchIdle: "cstand",
-    crouchAttach: "crattack"
+    move: 'run',
+    idle: 'stand',
+    jump: 'jump',
+    attack: 'attack',
+    crouchMove: 'cwalk',
+    crouchIdle: 'cstand',
+    crouchAttach: 'crattack'
   },
   walkSpeed: 350,
-  crouchSpeed: 175,
+  crouchSpeed: 175
 };
 
 // グローバル変数
@@ -37,7 +40,7 @@ let controls = {
   moveForward: false,
   moveBackward: false,
   moveLeft: false,
-  moveRight: false,
+  moveRight: false
 };
 // 時間の経過をはかるオブジェクト
 let clock = new THREE.Clock();
@@ -63,7 +66,12 @@ function init() {
   container = document.createElement('div');
   document.body.appendChild(container);
   // カメラ追加(遠視投影)
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000);
+  camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    1,
+    4000
+  );
   camera.position.set(0, 150, 1300);
   // シーン追加
   scene = new THREE.Scene();
@@ -81,23 +89,23 @@ function init() {
   light.shadowMapDarkness = 0.95;
   light.shadowCascade = true;
   light.shadowCascadeCount = 3;
-  light.shadowCascadeNearZ = [-1.000, 0.995, 0.998];
-  light.shadowCascadeFarZ  = [0.995, 0.998, 1.000];
+  light.shadowCascadeNearZ = [-1.0, 0.995, 0.998];
+  light.shadowCascadeFarZ = [0.995, 0.998, 1.0];
   light.shadowCascadeWidth = [1024, 1024, 1024];
   light.shadowCascadeHeight = [1024, 1024, 1024];
   scene.add(light);
   // グランド追加
-  let gt = THREE.ImageUtils.loadTexture("grasslight-big.jpg");
+  let gt = THREE.ImageUtils.loadTexture('grasslight-big.jpg');
   let gg = new THREE.PlaneGeometry(16000, 16000);
-  let gm = new THREE.MeshPhongMaterial({color:0xffffff, map:gt});
+  let gm = new THREE.MeshPhongMaterial({ color: 0xffffff, map: gt });
   let ground = new THREE.Mesh(gg, gm);
-  ground.rotation.x = - Math.PI / 2;
+  ground.rotation.x = -Math.PI / 2;
   ground.material.map.repeat.set(64, 64);
   ground.material.map.wrapS = ground.material.map.wrapT = THREE.RepeatWrapping;
   ground.receiveShadow = true;
   scene.add(ground);
   // レンダー処理
-  renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.setClearColor(scene.fog.color, 1);
   container.appendChild(renderer.domElement);
@@ -199,50 +207,50 @@ function onWindowResize(event) {
 /*
  * キーダウン
  */
-function onKeyDown (event) {
-  switch (event.keyCode){
+function onKeyDown(event) {
+  switch (event.keyCode) {
     case 38: /*up*/
-    case 87: /*W*/
+    case 87 /*W*/:
       playerCharacter.controls.moveForward = true;
       break;
     case 40: /*down*/
-    case 83: /*S*/
+    case 83 /*S*/:
       playerCharacter.controls.moveBackward = true;
       break;
     case 37: /*left*/
-    case 65: /*A*/
+    case 65 /*A*/:
       playerCharacter.controls.moveLeft = true;
       break;
     case 39: /*right*/
-    case 68: /*D*/
+    case 68 /*D*/:
       playerCharacter.controls.moveRight = true;
       break;
   }
-};
+}
 
 /*
  * キーアップ
  */
-function onKeyUp (event) {
-  switch (event.keyCode){
+function onKeyUp(event) {
+  switch (event.keyCode) {
     case 38: /*up*/
-    case 87: /*W*/
+    case 87 /*W*/:
       playerCharacter.controls.moveForward = false;
       break;
     case 40: /*down*/
-    case 83: /*S*/
+    case 83 /*S*/:
       playerCharacter.controls.moveBackward = false;
       break;
     case 37: /*left*/
-    case 65: /*A*/
+    case 65 /*A*/:
       playerCharacter.controls.moveLeft = false;
       break;
     case 39: /*right*/
-    case 68: /*D*/
+    case 68 /*D*/:
       playerCharacter.controls.moveRight = false;
       break;
   }
-};
+}
 
 /*
  * アニメーション処理
@@ -263,15 +271,18 @@ function render() {
   if (networkReady) {
     // 移動情報を文字列変換して送信
     // deltaとcontrolsはアニメーションの同期用
-    socket.emit('message', JSON.stringify({
-      type: 'move',
-      id: myId,
-      posX: characters[0].root.position.x,
-      posZ: characters[0].root.position.z,
-      rotY: characters[0].root.rotation._y,
-      controls: characters[0].controls,
-      delta: delta,
-    }));
+    socket.emit(
+      'message',
+      JSON.stringify({
+        type: 'move',
+        id: myId,
+        posX: characters[0].root.position.x,
+        posZ: characters[0].root.position.z,
+        rotY: characters[0].root.rotation._y,
+        controls: characters[0].controls,
+        delta: delta
+      })
+    );
   }
   renderer.render(scene, camera);
 }
@@ -284,45 +295,57 @@ function startNetwork() {
   socket = io.connect();
 
   // WebSocketに接続した時
-  socket.on('connect',() => {
+  socket.on('connect', () => {
     networkReady = true;
     let delta = clock.getDelta();
     // 入室情報を文字列変換して送信
-    socket.emit('message', JSON.stringify({
-      type: 'join',
-      id: myId,
-      posX: characters[0].root.position.x,
-      posZ: characters[0].root.position.z,
-      rotY: characters[0].root.rotation._y,
-      controls: characters[0].controls,
-      delta: delta,
-    }));
+    socket.emit(
+      'message',
+      JSON.stringify({
+        type: 'join',
+        id: myId,
+        posX: characters[0].root.position.x,
+        posZ: characters[0].root.position.z,
+        rotY: characters[0].root.rotation._y,
+        controls: characters[0].controls,
+        delta: delta
+      })
+    );
   });
 
   // 画面を閉じた時、リロードした時(Chrome,safariの場合)
   window.onunload = () => {
     // 退出情報を文字列変換して送信
-    socket.emit('message', JSON.stringify({
-      type: 'leave',
-      id: myId,
-    }));
+    socket.emit(
+      'message',
+      JSON.stringify({
+        type: 'leave',
+        id: myId
+      })
+    );
   };
   // 画面を閉じた時、リロードした時(firefoxの場合)
   window.onbeforeunload = () => {
     // 退出情報を文字列変換して送信
-    socket.emit('message', JSON.stringify({
-      type: 'leave',
-      id: myId,
-    }));
+    socket.emit(
+      'message',
+      JSON.stringify({
+        type: 'leave',
+        id: myId
+      })
+    );
   };
 
   /*** メッセージ受信イベント ***/
-  socket.on('message', (event) => {
+  socket.on('message', event => {
     // 受信したメッセージを復元
     let data = JSON.parse(event);
 
     // 新規プレイヤーが新規入室した時(新規プレイヤー用)
-    if (typeof data.length !== 'undefined' && data[data.length-1].type === "join"){
+    if (
+      typeof data.length !== 'undefined' &&
+      data[data.length - 1].type === 'join'
+    ) {
       console.log(`${data[data.length - 1].id} 入室しました`);
       // 既に入室してるプレイヤーを生成する
       for (let i = 0, cnt = data.length; i < cnt; i++) {
@@ -341,7 +364,7 @@ function startNetwork() {
     }
 
     // 移動した時(他のプレイヤーのみ)
-    if (data.type === 'move'){
+    if (data.type === 'move') {
       for (let i = 0, cnt = avatarlist.length; i < cnt; ++i) {
         let orge = avatarlist[i];
         // IDが一致したプレイヤーが動く
@@ -350,18 +373,18 @@ function startNetwork() {
           orge.root.position.z = data.posZ;
           orge.bodyOrientation = data.rotY;
           orge.controls = data.controls;
-          orge.update( data.delta );
+          orge.update(data.delta);
         }
       }
     }
 
     // 退室した時
-    if (data.type === 'leave'){
+    if (data.type === 'leave') {
       console.log(`${data.id} が退室しました`);
       for (let i = 0, cnt = playerlist.length; i < cnt; ++i) {
         let orge = playerlist[i];
         // IDが一致したプレイヤーは削除する
-        if(data.id === orge.myId){
+        if (data.id === orge.myId) {
           scene.remove(orge.root);
           // 配列からプレイヤーを削除する
           playerlist.some((v, i) => {

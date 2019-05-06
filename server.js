@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
 // プレーヤー情報を保持する
 const playerlist = [];
 
@@ -21,22 +23,22 @@ const io = require('socket.io').listen(server);
 io.set('log level', 1);
 
 // 接続された時の処理
-io.sockets.on('connection', (socket) => {
+io.sockets.on('connection', socket => {
   // メッセージの受信時
-  socket.on('message', (data) => {
+  socket.on('message', data => {
     // JSONをオブジェクトに変換
     let jsonData = JSON.parse(data);
     // 入室した場合
     if (jsonData.type === 'join') {
       // 新規のプレイヤー情報を格納
       const player = {
-        'type': jsonData.type,
-        'id': jsonData.id,
-        'posX': jsonData.posX,
-        'posZ': jsonData.posZ,
-        'rotY': jsonData.rotY,
-        'controls': jsonData.controls,
-        'delta': jsonData.delta,
+        type: jsonData.type,
+        id: jsonData.id,
+        posX: jsonData.posX,
+        posZ: jsonData.posZ,
+        rotY: jsonData.rotY,
+        controls: jsonData.controls,
+        delta: jsonData.delta
       };
       // 配列にプレイヤー情報を格納する
       playerlist.push(player);
@@ -47,18 +49,18 @@ io.sockets.on('connection', (socket) => {
     if (jsonData.type === 'leave') {
       // 配列からプレイヤーIDを削除する
       playerlist.some((v, i) => {
-        if(v.id === jsonData.id) playerlist.splice(i, 1);
+        if (v.id === jsonData.id) playerlist.splice(i, 1);
       });
       console.log(`${date()} 退室あり プレイヤー数: ${playerlist.length}`);
     }
 
     // 移動した場合
-    if(jsonData.type === 'move'){
+    if (jsonData.type === 'move') {
       // 配列から対象のID取得
-      for(let i = 0, cnt = playerlist.length; i < cnt; ++i) {
+      for (let i = 0, cnt = playerlist.length; i < cnt; ++i) {
         let orge = playerlist[i];
         // IDが一致したプレイヤーは値を保持させる
-        if(jsonData.id === orge.id){
+        if (jsonData.id === orge.id) {
           orge.type = jsonData.type;
           orge.posX = jsonData.posX;
           orge.posZ = jsonData.posZ;
@@ -68,12 +70,12 @@ io.sockets.on('connection', (socket) => {
       }
     }
 
-    if(jsonData.type === 'join') {
+    if (jsonData.type === 'join') {
       // データを送信したプレイヤーに全てのプレイヤー情報を送る
       socket.emit('message', JSON.stringify(playerlist));
       // データを送信したクライアント以外に情報を送る
       socket.broadcast.emit('message', data);
-    }else{
+    } else {
       // データを送信したクライアント以外に情報を送る
       socket.broadcast.emit('message', data);
     }
